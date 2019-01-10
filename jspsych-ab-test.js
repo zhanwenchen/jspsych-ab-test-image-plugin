@@ -120,7 +120,7 @@ jsPsych.plugins["ab-test"] = (function() {
     for (var i = 0; i < trial.images.length; i++) {
       // var str = buttons[i].replace(/%choice%/g, trial.images[i]).replace(/%image_url%/g, trial.images[i]);
       var str = buttons[i].replace(/%image_url%/g, trial.images[i]);
-      html += '<div class="jspsych-image-button-response-button" style="display: inline-block; margin:'+trial.margin_vertical+' '+trial.margin_horizontal+'" id="jspsych-image-button-response-button-' + i +'" data-choice="'+i+'">'+str+'</div>';
+      html += '<div class="jspsych-image-button-response-button" style="display: inline-block; margin:'+trial.margin_vertical+' '+trial.margin_horizontal+'" id="jspsych-ab-test-button-' + i +'" data-choice="'+i+'">'+str+'</div>';
     }
     html += '</div>';
 
@@ -135,8 +135,9 @@ jsPsych.plugins["ab-test"] = (function() {
     var start_time = Date.now();
 
     for (var i = 0; i < trial.images.length; i++) {
-      display_element.querySelector('#jspsych-image-button-response-button-' + i).addEventListener('click', function(e){
+      display_element.querySelector('#jspsych-ab-test-button-' + i).addEventListener('click', function(e){
         var choice = e.currentTarget.getAttribute('data-choice'); // don't use dataset for jsdom compatibility
+        console.log('choice is ' + choice)
         after_response(choice);
       });
     }
@@ -158,13 +159,13 @@ jsPsych.plugins["ab-test"] = (function() {
 
       // after a valid response, the stimulus will have the CSS class 'responded'
       // which can be used to provide visual feedback that a response was recorded
-      display_element.querySelector('#jspsych-image-button-response-stimulus').className += ' responded';
+      // display_element.querySelector('#jspsych-image-button-response-stimulus').className += ' responded';
 
       // disable all the buttons after a response
       var btns = document.querySelectorAll('.jspsych-image-button-response-button button');
       for(var i=0; i<btns.length; i++){
         //btns[i].removeEventListener('click');
-        btns[i].setAttribute('disabled', 'disabled');
+        // btns[i].setAttribute('disabled', 'disabled'); // Disabling button also disables user changing mind and going back.
       }
 
       if (trial.response_ends_trial) {
