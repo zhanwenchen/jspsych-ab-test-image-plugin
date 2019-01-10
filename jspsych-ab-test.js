@@ -81,7 +81,7 @@ jsPsych.plugins["ab-test"] = (function() {
       response_ends_trial: {
         type: jsPsych.plugins.parameterType.BOOL,
         pretty_name: 'Response ends trial',
-        default: false,
+        default: true,
         description: 'If true, then trial will end when user responds.'
       },
     }
