@@ -1,3 +1,8 @@
 img {
   max-height: 450px;
 }
+
+div.jspsych-image-button-response-button:last-child {
+  display: flex !important;
+  justify-content: space-around;
+}
