@@ -15,30 +15,86 @@
 
       var timeline = [];
 
-      var stimuli = ['img/20181025215535_487_evaluated_target_17.png', 'img/20180718164411_15_evaluated_target_17.png'];
+      // Hardcoded file list because of client code.
+      var images = ['img/20181025215535_487_evaluated_target_17.png', 'img/20180718164411_15_evaluated_target_17.png'];
 
-      var ab_test = {
-        type: 'ab-test',
-        // stimulus: 'img/20181025215535_487_evaluated_target_17.png',
-        // stimuli: stimuli,
-        images: stimuli,
-        prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
+      // Code from https://rosettacode.org/wiki/Combinations#JavaScript
+      function combinations(arr, k){
+          var i,
+          subI,
+          ret = [],
+          sub,
+          next;
+          for(i = 0; i < arr.length; i++){
+              if (k === 1) {
+                  ret.push( [ arr[i] ] );
+              } else {
+                  sub = combinations(arr.slice(i+1, arr.length), k-1);
+                  for(subI = 0; subI < sub.length; subI++ ){
+                      next = sub[subI];
+                      next.unshift(arr[i]);
+                      ret.push( next );
+                  }
+              }
+          }
+          return ret;
       }
 
-      var trial = {
-        type: 'ab-test',
-        stimuli: stimuli,
-        prompt: "<p>Select the better image, or if they are similar in quality, select that option.</p>",
-        // same_key: 'S',
-        // different_key: 'D',
-        answer: 'different'
+
+      // Code from https://stackoverflow.com/a/12646864/3853537
+      function shuffleArray(array) {
+          for (let i = array.length - 1; i > 0; i--) {
+              const j = Math.floor(Math.random() * (i + 1));
+              [array[i], array[j]] = [array[j], array[i]];
+          }
+          return array;
       }
+
+        // Get all two-combinations (order doesn't matter) of all candidates.
+        // n(n-1)/2
+      function generateTrials(images) {
+        var two_combinations = combinations(images, 2);
+        var trials = two_combinations.map(two_images => (
+          {
+            type: 'ab-test',
+            images: shuffleArray(two_images),
+            prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
+          }
+        ))
+        return trials;
+      }
+
+      var trials = generateTrials(images);
+      trials.forEach(trial => {
+        console.log(trial);
+      })
+      timeline = timeline.concat(trials);
+
+      // var ab_test_0 = {
+      //   type: 'ab-test',
+      //   // stimulus: 'img/20181025215535_487_evaluated_target_17.png',
+      //   // stimuli: stimuli,
+      //   images: stimuli,
+      //   prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
+      // }
+
       // timeline.push(trial);
-      timeline.push(ab_test);
+      // timeline.push(ab_test_1);
 
-    jsPsych.init({
-        timeline: timeline
-    })
+      // var ab_test_0 = {
+      //   type: 'ab-test',
+      //   // stimulus: 'img/20181025215535_487_evaluated_target_17.png',
+      //   // stimuli: stimuli,
+      //   images: stimuli,
+      //   prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
+      // }
+      //
+      // // timeline.push(trial);
+      // timeline.push(ab_test_1);
+
+      jsPsych.init({
+          timeline: timeline
+      })
 
     </script>
 </html>
