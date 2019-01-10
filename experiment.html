@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My experiment</title>
+        <script src="jspsych-6.0.5/jspsych.js"></script>
+        <!-- <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script> -->
+        <!-- Below to be deleted -->
+        <!-- <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script> -->
+        <script src="jspsych-ab-test.js"></script>
+        <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
+        <link href="custom.css" rel="stylesheet" type="text/css"></link>
+    </head>
+    <body></body>
+    <script>
+
+      var timeline = [];
+
+      var stimuli = ['img/20181025215535_487_evaluated_target_17.png', 'img/20180718164411_15_evaluated_target_17.png'];
+
+      var ab_test = {
+        type: 'ab-test',
+        // stimulus: 'img/20181025215535_487_evaluated_target_17.png',
+        // stimuli: stimuli,
+        images: stimuli,
+        prompt: "<p>Is this person happy or sad?</p>",
+      }
+
+      var trial = {
+        type: 'ab-test',
+        stimuli: stimuli,
+        prompt: "<p>Select the better image, or if they are similar in quality, select that option.</p>",
+        // same_key: 'S',
+        // different_key: 'D',
+        answer: 'different'
+      }
+      // timeline.push(trial);
+      timeline.push(ab_test);
+
+    jsPsych.init({
+        timeline: timeline
+    })
+
+    </script>
+</html>
