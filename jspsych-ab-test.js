@@ -113,6 +113,9 @@ jsPsych.plugins["ab-test"] = (function() {
       for (var i = 0; i < trial.images.length; i++) {
         buttons.push(trial.button_html);
       }
+
+      // CHANGED: add final button for a third option. This is accessed by last.
+      buttons.push(trial.button_html);
     }
     // html += '<div id="jspsych-image-button-response-btngroup">';
     var html = '<div id="jspsych-image-button-response-btngroup">';
@@ -122,6 +125,11 @@ jsPsych.plugins["ab-test"] = (function() {
       var str = buttons[i].replace(/%image_url%/g, trial.images[i]);
       html += '<div class="jspsych-image-button-response-button" style="display: inline-block; margin:'+trial.margin_vertical+' '+trial.margin_horizontal+'" id="jspsych-ab-test-button-' + i +'" data-choice="'+i+'">'+str+'</div>';
     }
+
+    i = trial.images.length;
+    var str = '<button class="jspsych-btn">They are similar</button>';
+    html += '<div class="jspsych-image-button-response-button" style="display: inline-block; margin:'+trial.margin_vertical+' '+trial.margin_horizontal+'" id="jspsych-ab-test-button-' + i +'" data-choice="'+i+'">'+str+'</div>';
+
     html += '</div>';
 
     //show prompt if there is one
@@ -134,7 +142,8 @@ jsPsych.plugins["ab-test"] = (function() {
     // start timing
     var start_time = Date.now();
 
-    for (var i = 0; i < trial.images.length; i++) {
+    // Add cilck handlers
+    for (var i = 0; i < trial.images.length+1; i++) {
       display_element.querySelector('#jspsych-ab-test-button-' + i).addEventListener('click', function(e){
         var choice = e.currentTarget.getAttribute('data-choice'); // don't use dataset for jsdom compatibility
         console.log('choice is ' + choice)
