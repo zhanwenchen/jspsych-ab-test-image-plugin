@@ -5,4 +5,10 @@ img {
 div.jspsych-image-button-response-button:last-child {
   display: flex !important;
   justify-content: space-around;
+  margin-top: 1em !important;
+}
+
+div.jspsych-image-button-response-button:last-child > button {
+  width: 100%;
+  font-size: 30px;
 }
