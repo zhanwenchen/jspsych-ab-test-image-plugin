@@ -21,25 +21,38 @@
 
       var timeline = [];
 
-      // Hardcoded file list because of client code.
-      // var images = ['img/20181025215535_75_evaluated_target_17.png', 'img/20181025215535_487_evaluated_target_17.png', 'img/20180718164411_15_evaluated_target_17.png'];
-
       var images = [];
+      // console.log('main: images = ' + images)
       var folder = "img/";
 
+      // BUG: Because fetch/ajax is aync, logic needs to be inside then/success.
+      // TODO: try to ditch ajax for fetch
       $.ajax({
           url : folder,
           success: function (data) {
               $(data).find("a").attr("href", function (i, fname) {
                   if( fname.match(/\.(jpe?g|png|gif)$/) ) {
                       // $("body").append( "<img src='"+ folder + val +"'>" );
-                      console.log(i + ' ' + fname);
+                      // console.log(i + ' ' + fname);
                       images.push('img/' + fname);
-                      console.log(images);
+                      // console.log('loop: images = ' + images);
                   }
               });
+
+              // console.log('main: images = ' + images);
+              var trials = generateTrials(images);
+              // console.log('trials = ' + trials);
+              trials.forEach(trial => {
+                console.log(trial);
+              })
+              timeline = timeline.concat(trials);
+              // console.log('timeline = ' + timeline);
+              jsPsych.init({
+                  timeline: timeline
+              })
           }
       });
+
 
       // Code from https://rosettacode.org/wiki/Combinations#JavaScript
       function combinations(arr, k){
@@ -76,7 +89,9 @@
         // Get all two-combinations (order doesn't matter) of all candidates.
         // n(n-1)/2
       function generateTrials(images) {
+        // console.log('generateTrials: images = ' + images);
         var two_combinations = combinations(images, 2);
+        // console.log('two_combinations = ' + two_combinations);
         var trials = two_combinations.map(two_images => (
           {
             type: 'ab-test',
@@ -87,11 +102,17 @@
         return trials;
       }
 
-      var trials = generateTrials(images);
-      trials.forEach(trial => {
-        console.log(trial);
-      })
-      timeline = timeline.concat(trials);
+      // console.log('main: images = ' + images);
+      // var trials = generateTrials(images);
+      // console.log('trials = ' + trials);
+      // trials.forEach(trial => {
+      //   console.log(trial);
+      // })
+      // timeline = timeline.concat(trials);
+      // console.log('timeline = ' + timeline);
+      // jsPsych.init({
+      //     timeline: timeline
+      // })
 
       // var ab_test_0 = {
       //   type: 'ab-test',
@@ -115,9 +136,7 @@
       // // timeline.push(trial);
       // timeline.push(ab_test_1);
 
-      jsPsych.init({
-          timeline: timeline
-      })
+
 
     </script>
 </html>
