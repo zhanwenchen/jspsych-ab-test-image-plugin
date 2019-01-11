@@ -22,7 +22,6 @@
       var timeline = [];
 
       var images = [];
-      // console.log('main: images = ' + images)
       var folder = "img/";
 
       // BUG: Because fetch/ajax is aync, logic needs to be inside then/success.
@@ -32,10 +31,7 @@
           success: function (data) {
               $(data).find("a").attr("href", function (i, fname) {
                   if( fname.match(/\.(jpe?g|png|gif)$/) ) {
-                      // $("body").append( "<img src='"+ folder + val +"'>" );
-                      // console.log(i + ' ' + fname);
                       images.push('img/' + fname);
-                      // console.log('loop: images = ' + images);
                   }
               });
 
@@ -48,7 +44,10 @@
               timeline = timeline.concat(trials);
               // console.log('timeline = ' + timeline);
               jsPsych.init({
-                  timeline: timeline
+                  timeline: timeline,
+                  on_finish: function() {
+                    jsPsych.data.displayData();
+                  }
               })
           }
       });
@@ -97,6 +96,7 @@
             type: 'ab-test',
             images: shuffleArray(two_images),
             prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
+            data: jsPsych.timelineVariable('data'),
           }
         ))
         return trials;
