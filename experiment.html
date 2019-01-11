@@ -2,6 +2,12 @@
 <html>
     <head>
         <title>My experiment</title>
+        <script
+          src="https://code.jquery.com/jquery-3.3.1.min.js"
+          integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+          crossorigin="anonymous"></script>
+
+
         <script src="jspsych-6.0.5/jspsych.js"></script>
         <!-- <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script> -->
         <!-- Below to be deleted -->
@@ -16,7 +22,24 @@
       var timeline = [];
 
       // Hardcoded file list because of client code.
-      var images = ['img/20181025215535_75_evaluated_target_17.png', 'img/20181025215535_487_evaluated_target_17.png', 'img/20180718164411_15_evaluated_target_17.png'];
+      // var images = ['img/20181025215535_75_evaluated_target_17.png', 'img/20181025215535_487_evaluated_target_17.png', 'img/20180718164411_15_evaluated_target_17.png'];
+
+      var images = [];
+      var folder = "img/";
+
+      $.ajax({
+          url : folder,
+          success: function (data) {
+              $(data).find("a").attr("href", function (i, fname) {
+                  if( fname.match(/\.(jpe?g|png|gif)$/) ) {
+                      // $("body").append( "<img src='"+ folder + val +"'>" );
+                      console.log(i + ' ' + fname);
+                      images.push('img/' + fname);
+                      console.log(images);
+                  }
+              });
+          }
+      });
 
       // Code from https://rosettacode.org/wiki/Combinations#JavaScript
       function combinations(arr, k){
