@@ -38,9 +38,9 @@
               // console.log('main: images = ' + images);
               var trials = generateTrials(images);
               // console.log('trials = ' + trials);
-              trials.forEach(trial => {
-                console.log(trial);
-              })
+              // trials.forEach(trial => {
+              //   console.log(trial);
+              // })
               timeline = timeline.concat(trials);
               // console.log('timeline = ' + timeline);
               jsPsych.init({
@@ -89,14 +89,17 @@
         // n(n-1)/2
       function generateTrials(images) {
         // console.log('generateTrials: images = ' + images);
-        var two_combinations = combinations(images, 2);
+        // var two_combinations = combinations(images, 2);
+        var two_combinations = shuffleArray(combinations(images, 2));
         // console.log('two_combinations = ' + two_combinations);
-        var trials = two_combinations.map(two_images => (
+        var trials = two_combinations.map((two_images, index) => (
           {
             type: 'ab-test',
             images: shuffleArray(two_images),
             prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
             data: jsPsych.timelineVariable('data'),
+            // index: index,
+            // num_trials: two_combinations.length,
           }
         ))
         return trials;

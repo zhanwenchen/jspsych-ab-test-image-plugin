@@ -44,7 +44,7 @@ jsPsych.plugins["ab-test"] = (function() {
         // according to "choices," replacing the magic string %choice%.
         // default: '<button class="jspsych-btn" >%choice%</button>',
         // default: '<button class="jspsych-btn" style="background: url(%image_url%)">%choice%</button>',
-        default: '<button class="jspsych-btn"><img src="%image_url%"></button>',
+        default: '<button class="jspsych-btn"><img src="%image_url%" title="%image_url%"></button>',
         array: true,
         description: 'The html of the button. Can create own style.'
       },
@@ -97,7 +97,8 @@ jsPsych.plugins["ab-test"] = (function() {
     // }
 
     // display stimulus
-    // var html = '<img src="'+trial.images[0]+'" id="jspsych-image-button-response-stimulus"></img>';
+    var trial_progress = jsPsych.progress();
+    var html = `<p>Trial ${trial_progress.current_trial_global} of ${trial_progress.total_trials}</p>`;
     // html += '<img src="'+trial.images[1]+'" id="jspsych-image-button-response-stimulus"></img>';
 
     // `<button style="background: url(${images[0]})"/>`
@@ -117,8 +118,8 @@ jsPsych.plugins["ab-test"] = (function() {
       // CHANGED: add final button for a third option. This is accessed by last.
       buttons.push(trial.button_html);
     }
-    // html += '<div id="jspsych-image-button-response-btngroup">';
-    var html = '<div id="jspsych-image-button-response-btngroup">';
+    html += '<div id="jspsych-image-button-response-btngroup">';
+    // var html = '<div id="jspsych-image-button-response-btngroup">';
 
     for (var i = 0; i < trial.images.length; i++) {
       // var str = buttons[i].replace(/%choice%/g, trial.images[i]).replace(/%image_url%/g, trial.images[i]);
@@ -192,7 +193,8 @@ jsPsych.plugins["ab-test"] = (function() {
       var trial_data = {
         "rt": response.rt,
         "stimulus": trial.stimulus,
-        "button_pressed": response.button
+        "button_pressed": response.button,
+        images: trial.images,
       };
 
       // clear the display
