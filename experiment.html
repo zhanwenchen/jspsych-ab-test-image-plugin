@@ -19,38 +19,97 @@
     <body></body>
     <script>
 
+      var saveDataUrl = 'http://0.0.0.0:5000/save';
+
       var timeline = [];
 
       var images = [];
-      var folder = "img/";
+      var folder = "/img";
+
+      function saveData(name, data){
+        fetch(saveDataUrl, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+          },
+          // body: JSON.stringify({
+          //   filename: name,
+          //   file: data,
+          // }),
+          // body: JSON.stringify(data),
+          body: data, // Avoid double jsonifying a json.
+        }).then(function(response) {
+          return response.json(); // BUG: not JSON response
+        }).then(function(responseJson) {
+          console.log('Saved data:', responseJson);
+        });
+        // var xhr = new XMLHttpRequest();
+        // xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
+        // xhr.setRequestHeader('Content-Type', 'application/json');
+        // xhr.send(JSON.stringify({filename: name, filedata: data}));
+      }
+
 
       // BUG: Because fetch/ajax is aync, logic needs to be inside then/success.
       // TODO: try to ditch ajax for fetch
-      $.ajax({
-          url : folder,
-          success: function (data) {
-              $(data).find("a").attr("href", function (i, fname) {
-                  if( fname.match(/\.(jpe?g|png|gif)$/) ) {
-                      images.push('img/' + fname);
-                  }
-              });
-
-              // console.log('main: images = ' + images);
-              var trials = generateTrials(images);
-              // console.log('trials = ' + trials);
-              // trials.forEach(trial => {
-              //   console.log(trial);
-              // })
-              timeline = timeline.concat(trials);
-              // console.log('timeline = ' + timeline);
-              jsPsych.init({
-                  timeline: timeline,
-                  on_finish: function() {
-                    jsPsych.data.displayData();
-                  }
-              })
+      var getImagesUrl = 'http://0.0.0.0:5000/img';
+      fetch(getImagesUrl)
+        .then(response => response.json())
+        .then((images) => {
+          // console.log(images);
+          if (!Array.isArray(images) || !images.length) {
+            // array does not exist, is not an array, or is empty
+            throw 'images is undefined or empty';
           }
-      });
+
+          // console.log('main: images = ' + images);
+          var trials = generateTrials(images);
+          // console.log('trials = ' + trials);
+          // trials.forEach(trial => {
+          //   console.log(trial);
+          // })
+          timeline = timeline.concat(trials);
+          // console.log('timeline = ' + timeline);
+          jsPsych.init({
+              timeline: timeline,
+              on_finish: function() {
+                jsPsych.data.displayData();
+                saveData("experiment_data", jsPsych.data.get().json());
+              }
+          })
+        })
+      // $.ajax({
+      //     url : folder,
+      //     success: function (data) {
+      //         $(data).find("a").attr("href", function (i, fname) {
+      //             if( fname.match(/\.(jpe?g|png|gif)$/) ) {
+      //                 images.push('img/' + fname);
+      //             }
+      //         });
+      //
+      //         if (!Array.isArray(images) || !images.length) {
+      //           // array does not exist, is not an array, or is empty
+      //           throw 'images is undefined or empty';
+      //         }
+      //
+      //         // console.log('main: images = ' + images);
+      //         var trials = generateTrials(images);
+      //         // console.log('trials = ' + trials);
+      //         // trials.forEach(trial => {
+      //         //   console.log(trial);
+      //         // })
+      //         timeline = timeline.concat(trials);
+      //         // console.log('timeline = ' + timeline);
+      //         jsPsych.init({
+      //             timeline: timeline,
+      //             on_finish: function() {
+      //               jsPsych.data.displayData();
+      //               saveData("experiment_data", jsPsych.data.get().csv());
+      //             }
+      //         })
+      //     }
+      // });
 
 
       // Code from https://rosettacode.org/wiki/Combinations#JavaScript

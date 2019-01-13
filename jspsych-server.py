@@ -3,9 +3,11 @@
 # 2. Save data to MongoDB.
 
 import os
+import datetime
 from glob import glob
+import json
 
-from flask import Flask, send_from_directory
+from flask import Flask, request
 from flask.json import jsonify
 from flask_pymongo import PyMongo
 
@@ -27,11 +29,10 @@ def index():
 
 @app.route('/img')
 def get_images():
-
     png_files = glob(os.path.join(IMG_PATH, '*.png'))
-    print(os.getcwd())
-    print('os.listdir(IMG_PATH) =', os.listdir(IMG_PATH))
-    print('png_files =', png_files)
+    # print(os.getcwd())
+    # print('os.listdir(IMG_PATH) =', os.listdir(IMG_PATH))
+    # print('png_files =', png_files)
     return jsonify(png_files)
 
 
@@ -42,16 +43,39 @@ def url_error(e):
     Wrong URL!
     <pre>{}</pre>""".format(e), 404
 
-def save_to_mongodb(object):
+
+@app.route('/save', methods=['POST'])
+def save_to_mongodb():
     """
     """
-    myclient = pymongo.MongoClient(MONGO_URL)
-    mydb = myclient[MONGO_DB]
-    mycol = mydb[MONGO_COLLECTION]
-
-    insert_return = mycol.insert_one(object)
-
-    print('save_to_mongodb: insert_return = {}'.format(insert_return))
+    # jspsychData = json.loads(request.data)
+    jspsychData = request.get_json()
+    print('save_to_mongodb: trying to save object')
+    # from pprint import pprint
+    # pprint(jspsychData)
+    # if request.is_json:
+    #     print("is json")
+    #     data = request.get_json()
+    #     print("type of data {}".format(type(data))) # type dict
+    #     print("data as string {}".format(json.dumps(data)))
+    #     print ("keys {}".format(json.dumps(data.keys())))
+    if isinstance(jspsychData, list):
+        jspsychData = {
+            'timestamp': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+            'data': jspsychData,
+        }
+    try:
+        mongo.db.jspsych.insert_one(jspsychData)
+    except Exception as e:
+        raise RuntimeError('save_to_mongodb: something bad happened: {}'.format(e))
+    # myclient = PyMongo.MongoClient(MONGO_URI)
+    # mydb = myclient[MONGO_COLLECTION]
+    # mycol = mydb[MONGO_COLLECTION]
+    #
+    # insert_return = mycol.insert_one(object)
+    #
+    # print('save_to_mongodb: insert_return = {}'.format(insert_return))
+    return jsonify(message='success')
 
 
 
