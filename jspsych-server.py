@@ -8,8 +8,11 @@ from glob import glob
 import json
 
 from flask import Flask, request
+from flask_cors import CORS, cross_origin
 from flask.json import jsonify
 from flask_pymongo import PyMongo
+
+# import crossdomain
 
 
 HOST = '0.0.0.0'
@@ -19,15 +22,20 @@ IMG_PATH = 'img'
 
 
 app = Flask(__name__, static_url_path='', static_folder='')
+CORS(app)
 app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
 
 @app.route('/')
+@cross_origin()
+# @crossdomain()
 def index():
     return app.send_static_file('experiment.html')
 
 
 @app.route('/img')
+@cross_origin()
+# @crossdomain()
 def get_images():
     png_files = glob(os.path.join(IMG_PATH, '*.png'))
     # print(os.getcwd())
@@ -45,6 +53,7 @@ def url_error(e):
 
 
 @app.route('/save', methods=['POST'])
+@cross_origin()
 def save_to_mongodb():
     """
     """

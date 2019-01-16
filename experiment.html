@@ -30,8 +30,9 @@
         fetch(saveDataUrl, {
           method: 'POST',
           headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
+            Accept: 'application/json',
+            mode: 'cors',
+            'Content-Type': 'application/json', // Used to be the only thing
           },
           // body: JSON.stringify({
           //   filename: name,
@@ -54,7 +55,13 @@
       // BUG: Because fetch/ajax is aync, logic needs to be inside then/success.
       // TODO: try to ditch ajax for fetch
       var getImagesUrl = 'http://0.0.0.0:5000/img';
-      fetch(getImagesUrl)
+      fetch(getImagesUrl, {
+        headers: {
+          Accept: 'application/json',
+          mode: 'cors',
+          'Content-Type': 'application/json', // Used to be the only thing
+        },
+      })
         .then(response => response.json())
         .then((images) => {
           // console.log(images);
