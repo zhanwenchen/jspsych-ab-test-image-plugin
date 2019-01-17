@@ -44,6 +44,8 @@
           return response.json(); // BUG: not JSON response
         }).then(function(responseJson) {
           console.log('Saved data:', responseJson);
+        }).catch((err) => {
+          console.error('promise exception: ' + err);
         });
         // var xhr = new XMLHttpRequest();
         // xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
@@ -85,7 +87,9 @@
                 saveData("experiment_data", jsPsych.data.get().json());
               }
           })
-        })
+        }).catch((err) => {
+          console.error('promise exception: ' + err);
+        });
       // $.ajax({
       //     url : folder,
       //     success: function (data) {
