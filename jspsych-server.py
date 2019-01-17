@@ -28,14 +28,14 @@ mongo = PyMongo(app)
 
 @app.route('/')
 # @cross_origin()
-@crossdomain()
+@crossdomain(origin='*')
 def index():
     return app.send_static_file('experiment.html')
 
 
 @app.route('/img')
 # @cross_origin()
-@crossdomain()
+@crossdomain(origin='*')
 def get_images():
     png_files = glob(os.path.join(IMG_PATH, '*.png'))
     # print(os.getcwd())
@@ -53,7 +53,7 @@ def url_error(e):
 
 
 @app.route('/save', methods=['POST'])
-@cross_origin()
+# @cross_origin()
 def save_to_mongodb():
     """
     """
