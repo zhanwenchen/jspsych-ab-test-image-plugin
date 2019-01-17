@@ -12,7 +12,7 @@ from flask_cors import CORS, cross_origin
 from flask.json import jsonify
 from flask_pymongo import PyMongo
 
-# import crossdomain
+from crossdomain import crossdomain
 
 
 HOST = '0.0.0.0'
@@ -27,15 +27,15 @@ app.config["MONGO_URI"] = MONGO_URI
 mongo = PyMongo(app)
 
 @app.route('/')
-@cross_origin()
-# @crossdomain()
+# @cross_origin()
+@crossdomain()
 def index():
     return app.send_static_file('experiment.html')
 
 
 @app.route('/img')
-@cross_origin()
-# @crossdomain()
+# @cross_origin()
+@crossdomain()
 def get_images():
     png_files = glob(os.path.join(IMG_PATH, '*.png'))
     # print(os.getcwd())
