@@ -19,10 +19,11 @@
     <body></body>
     <script>
 
-      var connectionUrl = window.location.hostname;
+      // var connectionUrl = window.location.hostname;
 
-      var saveDataUrl = `${connectionUrl}/save`;
-      console.log('saveDataUrl = ' + saveDataUrl)
+      // var saveDataUrl = `${connectionUrl}/save`;
+      var saveDataUrl = `/save`;
+      // console.log('saveDataUrl = ' + saveDataUrl)
 
       var timeline = [];
 
@@ -59,8 +60,9 @@
 
       // BUG: Because fetch/ajax is aync, logic needs to be inside then/success.
       // TODO: try to ditch ajax for fetch
-      var getImagesUrl = `${connectionUrl}/img`;
-      console.log('getImagesUrl = ' + getImagesUrl)
+      // var getImagesUrl = `${connectionUrl}/img`;
+      var getImagesUrl = `/img`;
+      // console.log('getImagesUrl = ' + getImagesUrl)
       fetch(getImagesUrl, {
         method: 'GET',
         headers: {
