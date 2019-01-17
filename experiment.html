@@ -19,7 +19,9 @@
     <body></body>
     <script>
 
-      var saveDataUrl = 'http://0.0.0.0:5000/save';
+      var connectionUrl = window.location.hostname;
+
+      var saveDataUrl = `${connectionUrl}/save`;
 
       var timeline = [];
 
@@ -56,7 +58,7 @@
 
       // BUG: Because fetch/ajax is aync, logic needs to be inside then/success.
       // TODO: try to ditch ajax for fetch
-      var getImagesUrl = 'http://0.0.0.0:5000/img';
+      var getImagesUrl = `${connectionUrl}/img`;
       fetch(getImagesUrl, {
         method: 'GET',
         headers: {
