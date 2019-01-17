@@ -58,6 +58,7 @@
       // TODO: try to ditch ajax for fetch
       var getImagesUrl = 'http://0.0.0.0:5000/img';
       fetch(getImagesUrl, {
+        method: 'GET',
         headers: {
           Accept: 'application/json',
           mode: 'cors',
