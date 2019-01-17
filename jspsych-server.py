@@ -35,7 +35,7 @@ def index():
 
 @app.route('/img')
 # @cross_origin()
-@crossdomain(origin='*')
+# @crossdomain(origin='*')
 def get_images():
     png_files = glob(os.path.join(IMG_PATH, '*.png'))
     # print(os.getcwd())
