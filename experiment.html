@@ -9,16 +9,12 @@
 
 
         <script src="jspsych-6.0.5/jspsych.js"></script>
-        <!-- <script src="jspsych-6.0.5/plugins/jspsych-html-keyboard-response.js"></script> -->
-        <!-- Below to be deleted -->
-        <!-- <script src="jspsych-6.0.5/plugins/jspsych-image-button-response.js"></script> -->
         <script src="jspsych-ab-test.js"></script>
         <link href="jspsych-6.0.5/css/jspsych.css" rel="stylesheet" type="text/css"></link>
         <link href="custom.css" rel="stylesheet" type="text/css"></link>
     </head>
     <body></body>
     <script>
-
       // var connectionUrl = window.location.hostname;
 
       // var saveDataUrl = `${connectionUrl}/save`;
@@ -38,11 +34,6 @@
             mode: 'cors',
             'Content-Type': 'application/json', // Used to be the only thing
           },
-          // body: JSON.stringify({
-          //   filename: name,
-          //   file: data,
-          // }),
-          // body: JSON.stringify(data),
           body: data, // Avoid double jsonifying a json.
         }).then(function(response) {
           return response.json(); // BUG: not JSON response
@@ -51,10 +42,6 @@
         }).catch((err) => {
           console.error('promise exception: ' + err);
         });
-        // var xhr = new XMLHttpRequest();
-        // xhr.open('POST', 'write_data.php'); // 'write_data.php' is the path to the php file described above.
-        // xhr.setRequestHeader('Content-Type', 'application/json');
-        // xhr.send(JSON.stringify({filename: name, filedata: data}));
       }
 
 
@@ -97,37 +84,6 @@
         }).catch((err) => {
           console.error('promise exception: ' + err);
         });
-      // $.ajax({
-      //     url : folder,
-      //     success: function (data) {
-      //         $(data).find("a").attr("href", function (i, fname) {
-      //             if( fname.match(/\.(jpe?g|png|gif)$/) ) {
-      //                 images.push('img/' + fname);
-      //             }
-      //         });
-      //
-      //         if (!Array.isArray(images) || !images.length) {
-      //           // array does not exist, is not an array, or is empty
-      //           throw 'images is undefined or empty';
-      //         }
-      //
-      //         // console.log('main: images = ' + images);
-      //         var trials = generateTrials(images);
-      //         // console.log('trials = ' + trials);
-      //         // trials.forEach(trial => {
-      //         //   console.log(trial);
-      //         // })
-      //         timeline = timeline.concat(trials);
-      //         // console.log('timeline = ' + timeline);
-      //         jsPsych.init({
-      //             timeline: timeline,
-      //             on_finish: function() {
-      //               jsPsych.data.displayData();
-      //               saveData("experiment_data", jsPsych.data.get().csv());
-      //             }
-      //         })
-      //     }
-      // });
 
 
       // Code from https://rosettacode.org/wiki/Combinations#JavaScript
@@ -181,42 +137,5 @@
         ))
         return trials;
       }
-
-      // console.log('main: images = ' + images);
-      // var trials = generateTrials(images);
-      // console.log('trials = ' + trials);
-      // trials.forEach(trial => {
-      //   console.log(trial);
-      // })
-      // timeline = timeline.concat(trials);
-      // console.log('timeline = ' + timeline);
-      // jsPsych.init({
-      //     timeline: timeline
-      // })
-
-      // var ab_test_0 = {
-      //   type: 'ab-test',
-      //   // stimulus: 'img/20181025215535_487_evaluated_target_17.png',
-      //   // stimuli: stimuli,
-      //   images: stimuli,
-      //   prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
-      // }
-
-      // timeline.push(trial);
-      // timeline.push(ab_test_1);
-
-      // var ab_test_0 = {
-      //   type: 'ab-test',
-      //   // stimulus: 'img/20181025215535_487_evaluated_target_17.png',
-      //   // stimuli: stimuli,
-      //   images: stimuli,
-      //   prompt: "<p>Click on the better image, or 'They are similar' if there is no clear winner</p>",
-      // }
-      //
-      // // timeline.push(trial);
-      // timeline.push(ab_test_1);
-
-
-
     </script>
 </html>
